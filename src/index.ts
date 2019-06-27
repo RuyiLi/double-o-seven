@@ -63,6 +63,8 @@ client.on('message', async (msg: Message): Promise<Message | Message[] | undefin
 
     if (activeGames.includes(user.id)) return msg.reply(`${name2} is already in a game.`);
 
+    if (activeGames.includes(msg.author.id)) return msg.reply('You are already in a game!');
+
     try {
         const collected: Collection<Snowflake, Message> = await userChan.awaitMessages((m: Message): boolean => m.content.toLowerCase() === 'yes' || m.content.toLowerCase() === 'no', {
             max: 1,
@@ -148,7 +150,7 @@ client.on('message', async (msg: Message): Promise<Message | Message[] | undefin
                     break;
                 }
             } else if (a1 === 'surrender') {            // Player 1 surrenders
-                message = `${name} drops their gun. The game ends without any casualties. ${name2} is the winner!`;
+                message = `${name1} drops their gun. The game ends without any casualties. ${name2} is the winner!`;
                 user.send(message);
                 msg.author.send(message);
                 break;
